@@ -1,0 +1,82 @@
+### Create policy request
+POST http://localhost:8000/api/policy-requests
+Content-Type: application/json
+
+{
+  "client_request_id": "AGT-2026-0001",
+  "agent_id": "AGENT-17",
+  "customer_name": "Sample Customer",
+  "date_of_birth": "1998-04-10",
+  "destination": "INTERNATIONAL",
+  "trip_start": "2026-11-10",
+  "trip_end": "2026-11-14",
+  "plan_code": "PLUS",
+  "sum_insured": 300000
+}
+
+### Repeat same request
+POST http://localhost:8000/api/policy-requests
+Content-Type: application/json
+
+{
+  "client_request_id": "AGT-2026-0001",
+  "agent_id": "AGENT-17",
+  "customer_name": "Sample Customer",
+  "date_of_birth": "1998-04-10",
+  "destination": "INTERNATIONAL",
+  "trip_start": "2026-11-10",
+  "trip_end": "2026-11-14",
+  "plan_code": "PLUS",
+  "sum_insured": 300000
+}
+
+### List policy requests
+GET http://localhost:8000/api/policy-requests?page=1&status=VALIDATED
+
+### Show detail
+GET http://localhost:8000/api/policy-requests/<public_request_id>
+
+### Submit to mock insurer
+POST http://localhost:8000/api/policy-requests/<public_request_id>/submit
+
+### Set mock insurer scenario
+POST http://localhost:8000/api/mock-insurer/scenario
+Content-Type: application/json
+
+{
+  "scenario": "timeout_after_issue"
+}
+
+### Reconcile timed-out issuance
+POST http://localhost:8000/api/mock-insurer/reconcile
+Content-Type: application/json
+
+{
+  "provider_reference": "REF-ABCD1234"
+}
+
+### Send callback
+POST http://localhost:8000/api/mock-insurer/callback
+Content-Type: application/json
+
+{
+  "provider_reference": "REF-ABCD1234",
+  "event_id": "EV-1234",
+  "policy_number": "POL-1234"
+}
+
+### Validation failure
+POST http://localhost:8000/api/policy-requests
+Content-Type: application/json
+
+{
+  "client_request_id": "AGT-2026-0002",
+  "agent_id": "AGENT-17",
+  "customer_name": "Bad Input",
+  "date_of_birth": "2099-01-01",
+  "destination": "EUROPE",
+  "trip_start": "2026-11-10",
+  "trip_end": "2026-11-09",
+  "plan_code": "GOLD",
+  "sum_insured": 200000
+}
